@@ -4,9 +4,9 @@ AFTER INSERT
 ON Dostawy
 FOR EACH ROW
 BEGIN
-	update Skladniki
-	set Ilosc_na_stanie = Ilosc_na_stanie + :new.Ilosc
-	where ID = :new.ID_skladnika;
+	UPDATE Skladniki
+	SET Ilosc_na_stanie = Ilosc_na_stanie + :NEW.Ilosc
+	WHERE ID = :NEW.ID_skladnika;
 END;
 
 SELECT * FROM Skladniki;
@@ -21,21 +21,21 @@ BEFORE INSERT
 ON Klienci
 FOR EACH ROW
 DECLARE
-  v_imie VARCHAR2(50);
-  v_nazwisko VARCHAR(50);
-  v_wiek NUMBER;
-  v_data_urodzenia DATE;
+	v_imie VARCHAR2(50);
+	v_nazwisko VARCHAR(50);
+	v_wiek NUMBER;
+	v_data_urodzenia DATE;
 BEGIN
-  v_imie := :new.imie;
-  v_nazwisko := :new.nazwisko;
-  v_data_urodzenia := :new.data_urodzenia;
-  SELECT MONTHS_BETWEEN(TRUNC(sysdate), TO_DATE(v_data_urodzenia,'DD-MON-YYYY'))/12 INTO v_wiek FROM DUAL;
-  if v_wiek < 18 then
-    RAISE_APPLICATION_ERROR (-20000, 'Klient nie moze miec mniej niz 18 lat!');
-  end if;
-  if REGEXP_LIKE(v_imie, '[^A-Za-z]') or REGEXP_LIKE(v_nazwisko, '[^A-Za-z]') then
-    RAISE_APPLICATION_ERROR (-20000, 'W imieniu lub nazwisku klienta wystepuja niedozwolone znaki!');  
-  end if;  
+	v_imie := :NEW.imie;
+	v_nazwisko := :NEW.nazwisko;
+	v_data_urodzenia := :NEW.data_urodzenia;
+	SELECT MONTHS_BETWEEN(TRUNC(sysdate), TO_DATE(v_data_urodzenia,'DD-MON-YYYY'))/12 INTO v_wiek FROM DUAL;
+	IF v_wiek < 18 THEN
+		RAISE_APPLICATION_ERROR (-20000, 'Klient nie moze miec mniej niz 18 lat!');
+	END IF;
+	IF REGEXP_LIKE(v_imie, '[^A-Za-z]') OR REGEXP_LIKE(v_nazwisko, '[^A-Za-z]') THEN
+		RAISE_APPLICATION_ERROR (-20000, 'W imieniu lub nazwisku klienta wystepuja niedozwolone znaki!');  
+	END IF;  
 END;
 
 INSERT INTO Klienci (Imie, Nazwisko, Data_urodzenia, Kontakt, Czy_staly_klient) VALUES
