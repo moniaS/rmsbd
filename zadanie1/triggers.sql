@@ -15,7 +15,7 @@ INSERT INTO Dostawy (ID_dostawcy, ID_skladnika, Data_dostawy, Ilosc) VALUES
 (SELECT ID from Skladniki WHERE Nazwa='Czekolada'), TO_DATE('12-01-2017','MM-DD-YYYY'), 5);
 SELECT * FROM Skladniki;
 
---2 - SprawdŸ czy wiek klienta, imiê i nazwisko s¹ poprawne
+--2 - SprawdŸ, czy wiek klienta, imiê i nazwisko s¹ poprawne
 CREATE OR REPLACE TRIGGER SprawdzDaneKlienta
 BEFORE INSERT
 ON Klienci

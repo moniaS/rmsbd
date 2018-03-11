@@ -31,7 +31,7 @@ END;
 
 SELECT id_dostawcy, PodajUdzialProcentowyDostawcow(id_dostawcy) udzial_procentowy FROM dostawy GROUP BY id_dostawcy;
 
---3 - Wypisanie brakujących składników oraz ich potencjalnych dostawców (kursory, pętle, instrukcje warunkowe)
+--3 - Wypisanie brakujących składników oraz ich potencjalnych dostawców (kursory, pętla WHILE, instrukcje warunkowe)
 CREATE OR REPLACE PROCEDURE WypiszBrakująceSkładniki
 AS
 	v_NazwaSkladnika VARCHAR2(50); 
@@ -81,7 +81,7 @@ UPDATE Skladniki SET Ilosc_na_stanie = 0 WHERE ID = 1;
 
 EXECUTE RMSBD.WypiszBrakująceSkładniki;
 
---4 - Podanie profitu z dania na podstawie ceny składników i ceny dania (kursory, pętle, instrukcje warunkowe)
+--4 - Podanie profitu z dania na podstawie ceny składników i ceny dania (kursor, pętla WHILE)
 CREATE OR REPLACE FUNCTION ProfitZDania
 (
 	p_id_dania NUMBER
@@ -115,3 +115,27 @@ BEGIN
 END;
 
 SELECT Nazwa, ProfitZDania(ID) AS ProfitZDania FROM Dania;
+
+--5 - Oblicz czas przygotowania zamówień (kursor, pętla FOR)
+CREATE OR REPLACE FUNCTION ObliczCzasPrzygotZamowienia
+(
+	v_id_zamowienia NUMBER
+) RETURN INTERVAL DAY TO SECOND AS
+CURSOR cursorDaniaZamowienia IS
+	SELECT id_dania from Zamowienia_Dania
+	WHERE id_zamowienia = v_id_zamowienia;
+	v_czas_przygotowania_calk INTERVAL DAY(0) TO SECOND(0) := '0 0:0:0.0';
+	v_czas_przygotowania_dania INTERVAL DAY(0) TO SECOND(0) := '0 0:0:0.0';
+BEGIN
+	FOR danie IN cursorDaniaZamowienia
+	LOOP
+		SELECT czas_przygotowania INTO v_czas_przygotowania_dania FROM Dania
+		WHERE id = danie.id_dania;
+		v_czas_przygotowania_calk := v_czas_przygotowania_calk + v_czas_przygotowania_dania;
+	END LOOP;
+	RETURN v_czas_przygotowania_calk;
+END;
+
+SELECT ID, obliczczasprzygotzamowienia(ID) czas_przygotowania_zam FROM Zamowienia;
+
+
