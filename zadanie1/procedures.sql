@@ -138,4 +138,40 @@ END;
 
 SELECT ID, obliczczasprzygotzamowienia(ID) czas_przygotowania_zam FROM Zamowienia;
 
+--6 -- Zmiana liczby dań w zamówienia (wyjątki)
+CREATE OR REPLACE PROCEDURE ZmienLiczbeDanNaZamowieniu
+(
+	p_id_zamowienia NUMBER,
+	p_id_dania NUMBER,
+  p_liczba NUMBER
+) AS
+  Zamowienie_nie_odnalezione EXCEPTION;
+  Za_duza_liczba_zamowionych_dan EXCEPTION;
+BEGIN
+  BEGIN
+  IF p_liczba > 15 THEN
+      RAISE Za_duza_liczba_zamowionych_dan;
+  END IF;    
+  UPDATE Zamowienia_Dania
+  SET liczba = p_liczba
+  WHERE id_dania = p_id_dania
+  AND id_zamowienia = p_id_zamowienia;
+  EXCEPTION
+      WHEN NO_DATA_FOUND THEN
+          RAISE Zamowienie_nie_odnalezione;
+  END;
+  EXCEPTION
+      WHEN Zamowienie_nie_odnalezione THEN
+          DBMS_OUTPUT.PUT_LINE ('Nie ma zamowienia z wybranym daniem');
+          DBMS_OUTPUT.PUT_LINE (SQLERRM);
+          DBMS_OUTPUT.PUT_LINE (SQLCODE);
+      WHEN Za_duza_liczba_zamowionych_dan THEN
+          DBMS_OUTPUT.PUT_LINE ('Nie jestemy w stanie zrealizowac takiego duzego zamowienia :(');
+          DBMS_OUTPUT.PUT_LINE (SQLERRM);
+          DBMS_OUTPUT.PUT_LINE (SQLCODE);
+END;
+
+EXECUTE ZmienLiczbeDanNaZamowieniu(5, 1, 2);
+EXECUTE ZmienLiczbeDanNaZamowieniu(1, 1, 20);
+
 
