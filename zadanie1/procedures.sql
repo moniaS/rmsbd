@@ -19,8 +19,6 @@ CREATE OR REPLACE FUNCTION PodajUdzialProcentowyDostawcow
 	id_d NUMBER
 ) RETURN BINARY_DOUBLE AS
 	udzial_procentowy BINARY_DOUBLE;
-	liczba_dostaw_dostawcy NUMBER;
-	liczba_wszystkich_dostaw NUMBER;
 BEGIN
 	SELECT ROUND(COUNT(ID_dostawcy) / (SELECT COUNT(ID_dostawcy) FROM Dostawy), 4) INTO udzial_procentowy
 	FROM Dostawy
