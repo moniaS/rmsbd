@@ -40,3 +40,43 @@ END;
 
 INSERT INTO Klienci (Imie, Nazwisko, Data_urodzenia, Kontakt, Czy_staly_klient) VALUES
  ('Adam88', 'Adamowicz99', '21-JAN-2017', '500-500-500', 0);
+
+ -- 3 - Aktualizuj ilosc skladnikow po otrzymaniu nowego zamowienia
+ --brakuje rzucic wyjatkiem gdy nie ma wystarczajaco skladnikow -- dokoncze wieczorem :)
+CREATE OR REPLACE TRIGGER AktuSkladnikiPoZamowieniu
+AFTER INSERT
+ON ZAMOWIENIA_DANIA
+FOR EACH ROW
+DECLARE
+  p_skladnik_id skladniki.id%TYPE;
+  p_danie_id dania.id%TYPE;
+  p_ile_skladnikow NUMBER;
+  p_ilosc_na_stanie skladniki.ilosc_na_stanie%TYPE; --potrzebne aby sprawdzic czy jest na stanie wystarczajaco skladnikow
+  p_ilosc_dan zamowienia_dania.liczba%TYPE;
+  CURSOR cursorSkladniki (idDanie dania.id%TYPE) IS
+  SELECT ID_skladnika, Ilosc from Dania_Skladniki
+  where id_dania = idDanie;
+BEGIN
+  p_danie_id := :NEW.id_dania;
+  p_ilosc_dan := :NEW.liczba;
+  OPEN cursorSkladniki(p_danie_id);
+  FETCH cursorSkladniki INTO p_skladnik_id, p_ile_skladnikow;
+  WHILE(cursorSkladniki%FOUND) loop
+    DBMS_OUTPUT.PUT_LINE ('Zuzyto ' || p_ile_skladnikow * p_ilosc_dan || ' skladnikow o id ' || p_skladnik_id);
+    update skladniki
+    set ilosc_na_stanie = ilosc_na_stanie - p_ile_skladnikow * p_ilosc_dan
+    where id = p_skladnik_id;
+    FETCH cursorSkladniki INTO p_skladnik_id, p_ile_skladnikow;
+  end loop;
+  close cursorSkladniki;
+end;
+
+insert into zamowienia(data_zamowienia, id_klienta, cena)
+values ('01-JAN-2017', 2, 0.0);
+
+delete from zamowienia_dania where id_dania = 1 and id_zamowienia = 21;
+insert into zamowienia_dania(id_zamowienia, id_dania, liczba)
+values (21, 1, 2);
+
+update skladniki set ilosc_na_stanie = 21 where id = 2;
+
