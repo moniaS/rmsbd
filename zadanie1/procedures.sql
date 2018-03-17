@@ -172,4 +172,20 @@ END;
 EXECUTE ZmienLiczbeDanNaZamowieniu(5, 1, 2);
 EXECUTE ZmienLiczbeDanNaZamowieniu(1, 1, 20);
 
+--7 -dodanie nowej dostawy - potrzebne przy schedulerze
+create or replace 
+PROCEDURE zaopatrzenie(
+  p_id_dostawcy dostawy.id_dostawcy%TYPE,
+  p_id_skladnika dostawy.id_skladnika%TYPE,
+  p_ilosc dostawy.ilosc%TYPE
+) as
+begin
+  insert into dostawy (id_dostawcy, id_skladnika, data_dostawy, ilosc)
+  values (p_id_dostawcy, p_id_skladnika, sysdate, p_ilosc);
+end;
+begin
+  zaopatrzenie(3, 3, 5);
+end;
 
+insert into dostawy (id_dostawcy, id_skladnika, data_dostawy, ilosc)
+  values (5, 2, sysdate, 10);
