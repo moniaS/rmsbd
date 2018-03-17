@@ -56,27 +56,42 @@ DECLARE
   CURSOR cursorSkladniki (idDanie dania.id%TYPE) IS
   SELECT ID_skladnika, Ilosc from Dania_Skladniki
   where id_dania = idDanie;
+  zaMaloSkladnikow EXCEPTION;
 BEGIN
   p_danie_id := :NEW.id_dania;
   p_ilosc_dan := :NEW.liczba;
   OPEN cursorSkladniki(p_danie_id);
   FETCH cursorSkladniki INTO p_skladnik_id, p_ile_skladnikow;
   WHILE(cursorSkladniki%FOUND) loop
-    DBMS_OUTPUT.PUT_LINE ('Zuzyto ' || p_ile_skladnikow * p_ilosc_dan || ' skladnikow o id ' || p_skladnik_id);
-    update skladniki
-    set ilosc_na_stanie = ilosc_na_stanie - p_ile_skladnikow * p_ilosc_dan
+    select ilosc_na_stanie into p_ilosc_na_stanie from skladniki
     where id = p_skladnik_id;
-    FETCH cursorSkladniki INTO p_skladnik_id, p_ile_skladnikow;
+    --DBMS_OUTPUT.PUT_LINE ('Na stanie jest:  ' || p_ilosc_na_stanie || ' skladnikow' );
+    if p_ilosc_na_stanie < p_ile_skladnikow * p_ilosc_dan then
+      raise zaMaloSkladnikow;
+    else
+      --DBMS_OUTPUT.PUT_LINE ('Zuzyto ' || p_ile_skladnikow * p_ilosc_dan || ' skladnikow o id ' || p_skladnik_id);
+      update skladniki
+      set ilosc_na_stanie = ilosc_na_stanie - p_ile_skladnikow * p_ilosc_dan
+      where id = p_skladnik_id;
+      FETCH cursorSkladniki INTO p_skladnik_id, p_ile_skladnikow;
+    end if;
   end loop;
   close cursorSkladniki;
+  
+  exception
+    when zaMaloSkladnikow then
+      DBMS_OUTPUT.PUT_LINE ('Za malo skladnikow aby przygotowac danie');
 end;
 
+--wstawic nowe zamowienie
 insert into zamowienia(data_zamowienia, id_klienta, cena)
 values ('01-JAN-2017', 2, 0.0);
 
-delete from zamowienia_dania where id_dania = 1 and id_zamowienia = 21;
+--okreslic jakie dania w zamowieniu - przy wykonaniu tego wywolamy trigger
 insert into zamowienia_dania(id_zamowienia, id_dania, liczba)
-values (21, 1, 2);
+values (21, 4, 10);
 
+--funkcje pomocnicze
 update skladniki set ilosc_na_stanie = 21 where id = 2;
+delete from zamowienia_dania where id_dania = 4 and id_zamowienia = 21;
 
