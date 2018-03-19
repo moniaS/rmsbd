@@ -1,4 +1,4 @@
--- 1 - Aktualizuj iloœæ sk³adników po wstawieniu rekordu do tabeli dostaw
+-- 1 - Aktualizuj ilosc skladnikow po wstawieniu rekordu do tabeli Dostawy
 CREATE OR REPLACE TRIGGER AktualizujIloscSkladnikow
 AFTER INSERT
 ON Dostawy
@@ -9,13 +9,14 @@ BEGIN
 	WHERE ID = :NEW.ID_skladnika;
 END;
 
+-- Wstawienie rekordu do tabeli Dostawy
 SELECT * FROM Skladniki;
 INSERT INTO Dostawy (ID_dostawcy, ID_skladnika, Data_dostawy, Ilosc) VALUES
 ((SELECT ID FROM Dostawcy WHERE Nazwa='Super Korpo'), 
 (SELECT ID from Skladniki WHERE Nazwa='Czekolada'), TO_DATE('12-01-2017','MM-DD-YYYY'), 5);
 SELECT * FROM Skladniki;
 
---2 - SprawdŸ, czy wiek klienta, imiê i nazwisko s¹ poprawne
+--2 - Sprawdz, czy wiek klienta, imie i nazwisko sa poprawne
 CREATE OR REPLACE TRIGGER SprawdzDaneKlienta
 BEFORE INSERT
 ON Klienci
@@ -38,11 +39,11 @@ BEGIN
 	END IF;  
 END;
 
+-- Wstawienie rekordu do tabeli Klienci powodujace wywolanie wyjatku
 INSERT INTO Klienci (Imie, Nazwisko, Data_urodzenia, Kontakt, Czy_staly_klient) VALUES
  ('Adam88', 'Adamowicz99', '21-JAN-2017', '500-500-500', 0);
 
  -- 3 - Aktualizuj ilosc skladnikow po otrzymaniu nowego zamowienia
- --brakuje rzucic wyjatkiem gdy nie ma wystarczajaco skladnikow -- dokoncze wieczorem :)
 CREATE OR REPLACE TRIGGER AktuSkladnikiPoZamowieniu
 AFTER INSERT
 ON ZAMOWIENIA_DANIA
@@ -83,15 +84,15 @@ BEGIN
       DBMS_OUTPUT.PUT_LINE ('Za malo skladnikow aby przygotowac danie');
 end;
 
---wstawic nowe zamowienie
+--Wstawienie nowego zamowienia
 insert into zamowienia(data_zamowienia, id_klienta, cena)
 values ('01-JAN-2017', 2, 0.0);
 
---okreslic jakie dania w zamowieniu - przy wykonaniu tego wywolamy trigger
+--Okreslenie jakie dania sa w zamowieniu - przy wykonaniu tego wywolany zostaje trigger
 insert into zamowienia_dania(id_zamowienia, id_dania, liczba)
 values (21, 4, 10);
 
---funkcje pomocnicze
+--Funkcja pomocnicza
 update skladniki set ilosc_na_stanie = 21 where id = 2;
 delete from zamowienia_dania where id_dania = 4 and id_zamowienia = 21;
 

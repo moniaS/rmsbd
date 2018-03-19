@@ -1,4 +1,4 @@
---procedura wykonywana w schedulerze
+--Procedura wykonywana w schedulerze
 create or replace 
 PROCEDURE zaopatrzenie(
   p_id_dostawcy dostawy.id_dostawcy%TYPE,
@@ -15,8 +15,7 @@ end;
 insert into dostawy (id_dostawcy, id_skladnika, data_dostawy, ilosc)
   values (5, 2, sysdate, 10);
   
-
---tworzenie programu ktory ma sie wywolywac (wraz z definicja argumentow wykonywanej procedury)
+--Tworzenie programu ktory ma sie wywolywac (wraz z definicja argumentow wykonywanej procedury)
 BEGIN
   dbms_scheduler.create_program (
     program_name => 'dostawy_skladnikow_program',
@@ -45,7 +44,7 @@ BEGIN
   dbms_scheduler.enable('dostawy_skladnikow_program');
 END;
 
---tworzenie schedulera (harmonogram wykonywania zadania)
+--Tworzenie schedulera (harmonogram wykonywania zadania)
 begin
   dbms_scheduler.create_schedule (
     schedule_name => 'dostawy_skladnikow_schedule',
@@ -55,7 +54,7 @@ begin
     comments  => 'Nowa dostawa dotarla');
 end;
 
---definicja obiektu job - wiaze ze soba akcje(program) z definicja kiedy(schedulerem)
+--Definicja obiektu job - wiaze ze soba akcje(program) z definicja kiedy(schedulerem)
 begin
   dbms_scheduler.create_job (
     job_name  => 'dostawy_skladnikow_job',

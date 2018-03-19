@@ -1,4 +1,4 @@
---1 - Dodawanie skladnika 
+--1 - Dodawanie nowego skladnika 
 CREATE OR REPLACE PROCEDURE DodajSkladnik
 (
 	p_Nazwa VARCHAR2,
@@ -13,7 +13,7 @@ BEGIN
 	DodajSkladnik('Czekoladki mleczne', 'g');
 END;
 
---2 - Podanie udziału procentowego dostawców na podstawie tabeli Dostawy
+--2 - Podanie udzialu procentowego dostawcow na podstawie tabeli Dostawy
 CREATE OR REPLACE FUNCTION PodajUdzialProcentowyDostawcow
 (
 	id_d NUMBER
@@ -29,18 +29,18 @@ END;
 
 SELECT id_dostawcy, PodajUdzialProcentowyDostawcow(id_dostawcy) udzial_procentowy FROM dostawy GROUP BY id_dostawcy;
 
---3 - Wypisanie brakujących składników oraz ich potencjalnych dostawców (kursory, pętla WHILE, instrukcje warunkowe)
+--3 - Wypisanie brakujacych składnikow oraz ich potencjalnych dostawcow (kursory, petla WHILE, instrukcje warunkowe)
 CREATE OR REPLACE PROCEDURE WypiszBrakująceSkładniki
 AS
 	v_NazwaSkladnika VARCHAR2(50); 
 	v_IDSkladnika NUMBER(10); 
 	v_NazwaDostawcy VARCHAR2(50);
 	v_Dostawcy VARCHAR2(50);
-	--Deklaracja kursora dla składników  
+	--Deklaracja kursora dla skladnikow  
 	CURSOR cursorSkladniki IS
 	SELECT ID, Nazwa FROM Skladniki	
 	WHERE Ilosc_na_stanie = 0;
-	--Deklaracja kursora dla dostawców składnika
+	--Deklaracja kursora dla dostawcow skladnika
 	CURSOR cursorDostawcySkladnika (IDSkl NUMBER) IS
 	SELECT d.Nazwa FROM Dostawcy d, Dostawcy_Skladniki ds
 	WHERE d.ID = ds.ID_dostawcy AND ds.ID_skladnika = IDSkl;
@@ -79,7 +79,7 @@ UPDATE Skladniki SET Ilosc_na_stanie = 0 WHERE ID = 1;
 
 EXECUTE RMSBD.WypiszBrakująceSkładniki;
 
---4 - Podanie profitu z dania na podstawie ceny składników i ceny dania (kursor, pętla WHILE)
+--4 - Podanie profitu z dania na podstawie ceny składnikow i ceny dania (kursor, petla WHILE)
 CREATE OR REPLACE FUNCTION ProfitZDania
 (
 	p_id_dania NUMBER
@@ -101,7 +101,7 @@ BEGIN
 	FETCH cursorSkladniki INTO v_IDSkladnika, v_WykorzystywanaIloscSkladnika;
 
 	WHILE(cursorSkladniki%FOUND) LOOP
-		SELECT ID_dostawcy INTO v_ID_Dostawcy FROM Dostawy WHERE ID_skladnika = v_IDSkladnika AND rownum = 1 ORDER BY Data_dostawy ASC;
+		SELECT ID_dostawcy INTO v_ID_Dostawcy FROM Dostawy WHERE ID_skladnika = v_IDSkladnika AND rownum = 1 ORDER BY Data_dostawy DESC;
 		SELECT Cena INTO Cena_Skladnika FROM Dostawcy_Skladniki WHERE ID_dostawcy = v_ID_Dostawcy AND ID_skladnika = v_IDSkladnika;
 
 		v_cena_skladnikow := v_cena_skladnikow + (Cena_Skladnika * v_WykorzystywanaIloscSkladnika);
@@ -114,7 +114,7 @@ END;
 
 SELECT Nazwa, ProfitZDania(ID) AS ProfitZDania FROM Dania;
 
---5 - Oblicz czas przygotowania zamówień (kursor, pętla FOR)
+--5 - Oblicz czas przygotowania zamowien (kursor, petla FOR)
 CREATE OR REPLACE FUNCTION ObliczCzasPrzygotZamowienia
 (
 	v_id_zamowienia NUMBER
@@ -136,7 +136,7 @@ END;
 
 SELECT ID, obliczczasprzygotzamowienia(ID) czas_przygotowania_zam FROM Zamowienia;
 
---6 -- Zmiana liczby dań w zamówienia (wyjątki)
+--6 -- Zmiana liczby dan w zamowienia (wyjatki)
 CREATE OR REPLACE PROCEDURE ZmienLiczbeDanNaZamowieniu
 (
 	p_id_zamowienia NUMBER,
@@ -172,7 +172,7 @@ END;
 EXECUTE ZmienLiczbeDanNaZamowieniu(5, 1, 2);
 EXECUTE ZmienLiczbeDanNaZamowieniu(1, 1, 20);
 
---7 -dodanie nowej dostawy - potrzebne przy schedulerze
+--7 -Dodanie nowej dostawy - potrzebne przy schedulerze
 create or replace 
 PROCEDURE zaopatrzenie(
   p_id_dostawcy dostawy.id_dostawcy%TYPE,

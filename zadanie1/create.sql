@@ -1,3 +1,4 @@
+-- Tworzenie tabeli Skladniki
 CREATE TABLE Skladniki (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
 	Nazwa VARCHAR2(50 CHAR) NOT NULL,
@@ -5,7 +6,6 @@ CREATE TABLE Skladniki (
 	Jednostka VARCHAR2(5 CHAR) NOT NULL
 );
 
--- Generate ID using sequence and trigger
 CREATE SEQUENCE Skladniki_seq START WITH 1 INCREMENT BY 1;
 
 CREATE OR REPLACE TRIGGER Skladniki_seq_tr
@@ -14,10 +14,11 @@ CREATE OR REPLACE TRIGGER Skladniki_seq_tr
 BEGIN
  SELECT Skladniki_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
-/
+
 ALTER TABLE Skladniki
 ADD CHECK (Ilosc_na_stanie >= 0 AND LENGTHB(Nazwa) > 3);
 
+-- Tworzenie tabeli Dostawcy
 CREATE TABLE Dostawcy (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
 	Nazwa VARCHAR2(50 CHAR) NOT NULL,
@@ -25,7 +26,6 @@ CREATE TABLE Dostawcy (
 	Adres VARCHAR2(50 CHAR) NOT NULL
 );
 
--- Generate ID using sequence and trigger
 CREATE SEQUENCE Dostawcy_seq START WITH 1 INCREMENT BY 1;
 
 CREATE OR REPLACE TRIGGER Dostawcy_seq_tr
@@ -34,10 +34,11 @@ CREATE OR REPLACE TRIGGER Dostawcy_seq_tr
 BEGIN
  SELECT Dostawcy_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
-/
+
 ALTER TABLE Dostawcy
 ADD CHECK (LENGTHB(Nazwa) > 3 AND LENGTHB(Miasto) > 4);
 
+-- Tworzenie tabeli Dostawcy_Skladniki
 CREATE TABLE Dostawcy_Skladniki (
 	ID_dostawcy NUMBER(10) NOT NULL,
 	ID_skladnika NUMBER(10) NOT NULL,
@@ -49,6 +50,7 @@ CREATE TABLE Dostawcy_Skladniki (
 ALTER TABLE Dostawcy_Skladniki
 ADD CHECK (Cena > 0);
 
+-- Tworzenie tabeli Dostawy
 CREATE TABLE Dostawy (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
 	ID_dostawcy NUMBER(10) NOT NULL,
@@ -59,7 +61,6 @@ CREATE TABLE Dostawy (
 	CONSTRAINT D3 FOREIGN KEY (ID_skladnika) REFERENCES Skladniki (ID)
 );
 
--- Generate ID using sequence and trigger
 CREATE SEQUENCE Dostawy_seq START WITH 1 INCREMENT BY 1;
 
 CREATE OR REPLACE TRIGGER Dostawy_seq_tr
@@ -68,10 +69,11 @@ CREATE OR REPLACE TRIGGER Dostawy_seq_tr
 BEGIN
  SELECT Dostawy_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
-/
+
 ALTER TABLE Dostawy
 ADD CHECK (Ilosc > 0);
 
+-- Tworzenie tabeli Dania
 CREATE TABLE Dania (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
 	Nazwa VARCHAR2(50 CHAR) NOT NULL,
@@ -80,7 +82,6 @@ CREATE TABLE Dania (
 	Czas_przygotowania INTERVAL DAY TO SECOND NOT NULL
 );
 
--- Generate ID using sequence and trigger
 CREATE SEQUENCE Dania_seq START WITH 1 INCREMENT BY 1;
 
 CREATE OR REPLACE TRIGGER Dania_seq_tr
@@ -89,10 +90,11 @@ CREATE OR REPLACE TRIGGER Dania_seq_tr
 BEGIN
  SELECT Dania_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
-/
+
 ALTER TABLE Dania
 ADD CHECK ((Cena > 0) AND (LENGTHB(Nazwa) > 5));
 
+-- Tworzenie tabeli Dania_Skladniki
 CREATE TABLE Dania_Skladniki (
 	ID_dania NUMBER(10) NOT NULL,
 	ID_skladnika NUMBER(10) NOT NULL,
@@ -104,6 +106,7 @@ CREATE TABLE Dania_Skladniki (
 ALTER TABLE Dania_Skladniki
 ADD CHECK (Ilosc >= 0);
 
+-- Tworzenie tabeli Klienci
 CREATE TABLE Klienci (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
 	Imie VARCHAR2(50 CHAR) NOT NULL,
@@ -113,7 +116,6 @@ CREATE TABLE Klienci (
 	Czy_staly_klient NUMBER(1) DEFAULT 0 NOT NULL
 );
 
--- Generate ID using sequence and trigger
 CREATE SEQUENCE Klienci_seq START WITH 1 INCREMENT BY 1;
 
 CREATE OR REPLACE TRIGGER Klienci_seq_tr
@@ -122,8 +124,8 @@ CREATE OR REPLACE TRIGGER Klienci_seq_tr
 BEGIN
  SELECT Klienci_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
-/
 
+-- Tworzenie tabeli Zamowienia
 CREATE TABLE Zamowienia (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
 	Data_zamowienia DATE DEFAULT SYSDATE NOT NULL,
@@ -132,7 +134,6 @@ CREATE TABLE Zamowienia (
 	CONSTRAINT ZamKl FOREIGN KEY (ID_Klienta) REFERENCES Klienci (ID)
 );
 
--- Generate ID using sequence and trigger
 CREATE SEQUENCE Zamowienia_seq START WITH 1 INCREMENT BY 1;
 
 CREATE OR REPLACE TRIGGER Zamowienia_seq_tr
@@ -141,8 +142,8 @@ CREATE OR REPLACE TRIGGER Zamowienia_seq_tr
 BEGIN
  SELECT Zamowienia_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
-/
 
+-- Tworzenie tabeli Zamowienia_Dania
 CREATE TABLE Zamowienia_Dania (
 	ID_Zamowienia NUMBER(10) NOT NULL,
 	ID_Dania NUMBER(10) NOT NULL,
