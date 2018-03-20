@@ -1,8 +1,9 @@
+SET SERVEROUTPUT ON
 create or replace
 package menagerDostawcow
 is 
   ile_dostawcow number;
-  procedure wypisz_wszystkich;
+  procedure wypiszWszystkichPubliczna;
   function PodajUdzialProcentowyDostawcow(id_d number) return binary_double;
   procedure dodajDostawce(
     p_nazwa dostawcy.nazwa%TYPE,
@@ -11,7 +12,7 @@ is
   );
   function ilosc_dostawcow return number;
 end;
-  
+/
 create or replace package body menagerDostawcow
 is
   procedure wypisz_wszystkich is
@@ -28,6 +29,12 @@ is
       end loop;
     close cursorDostawcy;
     
+  end;
+
+  procedure wypiszWszystkichPubliczna
+  is
+  begin
+    wypisz_wszystkich;
   end;
 
   FUNCTION PodajUdzialProcentowyDostawcow
@@ -62,16 +69,18 @@ is
   
 begin
   select ilosc_dostawcow into ile_dostawcow from dual;
-
 end;
-
 
 --wywolywanie funkcji i procedur pakietowych
 select menagerDostawcow.ilosc_dostawcow from dual;
 select menagerDostawcow.podajUdzialProcentowyDostawcow(5) from dual;
---ta procedura wyswietla wartosc zmiennej pakietowej ile_dostawcow
+--wywolanie procedury prywatnej nie zadziala, poniewaz nie zostala zadeklarowana w specyfikacji pakietu
+--begin 
+--  menagerDostawcow.wypisz_wszystkich; 
+--end;
+--wywolanie procedury wywolujacej procedure prywatna, w ktorej wyswietlona zostaje wartosc zmiennej pakietowej ile_dostawcow
 begin 
-  menagerDostawcow.wypisz_wszystkich; 
+  menagerDostawcow.wypiszWszystkichPubliczna; 
 end;
 begin
    menagerdostawcow.dodajdostawce('Swieze dostawy', 'Wroclaw', 'Bednarska 120');
