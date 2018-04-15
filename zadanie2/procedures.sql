@@ -203,6 +203,35 @@ BEGIN
   PorownajZdjeciaDan(6, 8, 1);
 END;
 
+--Procedura porownujaca zdjecia dowolnych dan z tabeli Dania_Restauracje na podstawie ksztaltu obrazu
+CREATE OR REPLACE PROCEDURE PorownajZdjeciaDowolnychDan
+(
+  p_id_dania_1 Dania_Restauracje.id_dania%TYPE,
+  p_id_restauracji_1 Dania_Restauracje.id_restauracji%TYPE,
+  p_id_dania_2 Dania_Restauracje.id_dania%TYPE,
+  p_id_restauracji_2 Dania_Restauracje.id_restauracji%TYPE
+) AS
+  zdjecie_sygnatura_1 ORDImageSignature;
+  zdjecie_sygnatura_2 ORDImageSignature;
+  rezultat INTEGER(10);
+BEGIN
+  SELECT zdjecie_sygnatura INTO zdjecie_sygnatura_1 FROM Dania_Restauracje
+  WHERE id_dania = p_id_dania_1 AND id_restauracji = p_id_restauracji_1;
+  SELECT zdjecie_sygnatura INTO zdjecie_sygnatura_2 FROM Dania_Restauracje
+  WHERE id_dania = p_id_dania_2 AND id_restauracji = p_id_restauracji_2;
+  rezultat := ORDSYS.ORDImageSignature.isSimilar(zdjecie_sygnatura_1,
+  zdjecie_sygnatura_2,'shape=0.9', 20);
+  IF rezultat = 1 THEN
+   DBMS_OUTPUT.PUT_LINE('Zdjecia sa podobne');
+  ELSIF rezultat = 0 THEN
+   DBMS_OUTPUT.PUT_LINE('Zdjecia nie sa podobne');
+  END IF;
+END;
+
+BEGIN
+  PorownajZdjeciaDowolnychDan(7, 6, 5, 6);
+END;
+
 --Procedura sprawdzajaca podobienstwo wybranego zdjecia ze wszystkimi zdjeciami z tabeli Dania_Restauracje
 CREATE OR REPLACE PROCEDURE WybierzNajbardziejPodobne
 (
@@ -238,3 +267,5 @@ END;
 BEGIN
   WybierzNajbardziejPodobne(1, 6);
 END;
+
+
