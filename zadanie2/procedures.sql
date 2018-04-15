@@ -29,6 +29,8 @@ BEGIN
 END;
 
 --Procedura modyfikujaca zdjecie restauracji (powiekszenie, skala szarosci na 8 bitach, obrot o 90 stopni, rozjasnienie)
+ALTER TABLE Restauracje ADD zmodyfikowane_zdjecie ORDImage;
+
 CREATE OR REPLACE PROCEDURE ModyfikujZdjecieRestauracji
 (
   p_id_restauracji Restauracje.id%TYPE
