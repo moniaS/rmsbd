@@ -145,3 +145,60 @@ END;
 BEGIN
   EksportZmodZdjecieDania(6, 1);
 END;
+
+--Procedura dodajaca sygnature do zdjecia w tabeli Dania_Restauracje
+ALTER TABLE DANIA_RESTAURACJE
+ADD zdjecie_sygnatura ORDImageSignature
+
+CREATE OR REPLACE PROCEDURE DodajSygnatureDoZdjeciaDania
+(
+  p_id_dania Dania_Restauracje.id_dania%TYPE,
+  p_id_restauracji Dania_Restauracje.id_restauracji%TYPE
+) AS
+  obrazek ORDImage;
+  obrazek_sygnatura ORDImageSignature;
+BEGIN
+  UPDATE Dania_Restauracje
+  SET zdjecie_sygnatura = ORDSYS.ORDImageSignature.init() 
+  WHERE id_restauracji = p_id_restauracji AND id_dania = p_id_dania;
+  SELECT zdjecie, zdjecie_sygnatura INTO obrazek, obrazek_sygnatura FROM Dania_Restauracje
+  WHERE id_restauracji = p_id_restauracji AND id_dania = p_id_dania FOR UPDATE;
+  obrazek_sygnatura.generateSignature(obrazek);
+  UPDATE Dania_Restauracje
+  SET zdjecie_sygnatura = obrazek_sygnatura
+  WHERE id_restauracji = p_id_restauracji
+  AND id_dania = p_id_dania;
+END;
+
+BEGIN
+  DodajSygnatureDoZdjeciaDania(1, 6);
+  DodajSygnatureDoZdjeciaDania(1, 8);
+END;
+
+--Procedura porownujaca zdjecia dwoch dan z tabeli Dania_Restauracje
+CREATE OR REPLACE PROCEDURE PorownajZdjeciaDan
+(
+  p_id_restauracji_1 Dania_Restauracje.id_restauracji%TYPE,
+  p_id_restauracji_2 Dania_Restauracje.id_restauracji%TYPE,
+  p_id_dania Dania_Restauracje.id_dania%TYPE
+) AS
+  zdjecie_sygnatura_1 ORDImageSignature;
+  zdjecie_sygnatura_2 ORDImageSignature;
+  rezultat INTEGER(10);
+BEGIN
+  SELECT zdjecie_sygnatura INTO zdjecie_sygnatura_1 FROM Dania_Restauracje
+  WHERE id_dania = p_id_dania AND id_restauracji = p_id_restauracji_1;
+  SELECT zdjecie_sygnatura INTO zdjecie_sygnatura_2 FROM Dania_Restauracje
+  WHERE id_dania = p_id_dania AND id_restauracji = p_id_restauracji_2;
+  rezultat := ORDSYS.ORDImageSignature.isSimilar(zdjecie_sygnatura_1,
+  zdjecie_sygnatura_2,'color="0.8",texture=0.1,shape=0.2,location=0.2',10);
+  IF rezultat = 1 THEN
+   DBMS_OUTPUT.PUT_LINE('Zdjecia sa podobne');
+  ELSIF rezultat = 0 THEN
+   DBMS_OUTPUT.PUT_LINE('Zdjecia nie sa podobne');
+  END IF;
+END;
+
+BEGIN
+  PorownajZdjeciaDan(6, 8, 1);
+END;
