@@ -117,3 +117,34 @@ DodajDanieDoRestauracji(7, 6, 'makaron-kur-angelo.jpg');
 DodajDanieDoRestauracji(9, 5, 'kebab-kur-lavash.jpg');
 DodajDanieDoRestauracji(10, 5, 'kebab-wol-lavash.jpg');
 END;
+
+--Wstawienie danych do tabeli Wlasciciele
+INSERT INTO Wlasciciele (imie, nazwisko, email, nr_telefonu) VALUES ('Jan', 'Kowalski', 'kowalski@example.com', '999111999');
+INSERT INTO Wlasciciele (imie, nazwisko, email, nr_telefonu) VALUES ('Anna', 'Kowalska', 'kowalska@example.com', '888111999');
+INSERT INTO Wlasciciele (imie, nazwisko, email, nr_telefonu) VALUES ('Adam', 'Brzoza', 'brzoza@example.com', '777111999');
+INSERT INTO Wlasciciele (imie, nazwisko, email, nr_telefonu) VALUES ('Joanna', 'Debska', 'dembska@example.com', '333444999');
+INSERT INTO Wlasciciele (imie, nazwisko, email, nr_telefonu) VALUES ('Wojciech', 'Wrobel', 'wrobel@example.com', '666444999');
+INSERT INTO Wlasciciele (imie, nazwisko, email, nr_telefonu) VALUES ('Zofia', 'Dab', 'dab@example.com', '666555999');
+INSERT INTO Wlasciciele (imie, nazwisko, email, nr_telefonu) VALUES ('Katarzyna', 'Nowa', 'nowa@example.com', '777555999');
+INSERT INTO Wlasciciele (imie, nazwisko, email, nr_telefonu) VALUES ('Aleksandra', 'Szczesniak', 'szczesniak@example.com', '656555999');
+
+--Wstawienie danych do tabeli Wlasciciele_Restauracje
+INSERT INTO Wlasciciele_Restauracje VALUES (1, 1);
+INSERT INTO Wlasciciele_Restauracje VALUES (1, 2);
+INSERT INTO Wlasciciele_Restauracje VALUES (2, 2);
+INSERT INTO Wlasciciele_Restauracje VALUES (3, 3);
+INSERT INTO Wlasciciele_Restauracje VALUES (3, 4);
+INSERT INTO Wlasciciele_Restauracje VALUES (4, 5);
+INSERT INTO Wlasciciele_Restauracje VALUES (4, 6);
+INSERT INTO Wlasciciele_Restauracje VALUES (5, 6);
+INSERT INTO Wlasciciele_Restauracje VALUES (6, 7);
+INSERT INTO Wlasciciele_Restauracje VALUES (7, 8);
+INSERT INTO Wlasciciele_Restauracje VALUES (8, 9);
+
+--Wstawienie danych do tabeli Klienci
+INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('asia87');
+INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('zosia90');
+INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('antek60');
+INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('krzysiek85');
+INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('wojtek34');
+INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('ania66');
