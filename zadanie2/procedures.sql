@@ -204,7 +204,7 @@ BEGIN
 END;
 
 --Procedura sprawdzajaca podobienstwo wybranego zdjecia ze wszystkimi zdjeciami z tabeli Dania_Restauracje
-CREATE OR REPLACE PROCEDURE WyswietlPodobienstwoZdjecDan
+CREATE OR REPLACE PROCEDURE WybierzNajbardziejPodobne
 (
   p_id_dania Dania_Restauracje.id_dania%TYPE,
   p_id_restauracji Dania_Restauracje.id_restauracji%TYPE
@@ -213,7 +213,7 @@ CREATE OR REPLACE PROCEDURE WyswietlPodobienstwoZdjecDan
   id_restauracji Dania_Restauracje.id_restauracji%TYPE;
   zdjecie_sygnatura_1 ORDImageSignature;
   zdjecie_sygnatura_2 ORDImageSignature;
-  rezultat INTEGER;
+  rezultat FLOAT;
   CURSOR SygnaturyKursor IS SELECT id_dania, id_restauracji, zdjecie_sygnatura 
   FROM Dania_Restauracje;
 BEGIN
@@ -223,12 +223,12 @@ BEGIN
   FETCH SygnaturyKursor INTO id_dania, id_restauracji, zdjecie_sygnatura_2;
   WHILE(SygnaturyKursor%FOUND) LOOP
       IF zdjecie_sygnatura_2 IS NOT NULL THEN
-        rezultat := ORDSYS.ORDImageSignature.isSimilar(zdjecie_sygnatura_1,
-        zdjecie_sygnatura_2,'color="0.9",texture=0.0,shape=0.0,location=0.0', 20);
-        IF rezultat = 1 THEN
-          DBMS_OUTPUT.PUT_LINE('Zdjecia sa podobne - id_restauracji = ' || id_restauracji || ', id_dania = ' || id_dania);
-        ELSIF rezultat = 0 THEN
-          DBMS_OUTPUT.PUT_LINE('Zdjecia nie sa podobne - id_restauracji = ' || id_restauracji || ', id_dania = ' || id_dania);
+        rezultat := ORDSYS.ORDImageSignature.evaluateScore(zdjecie_sygnatura_1,
+        zdjecie_sygnatura_2,'color="0.9",texture=0.0,shape=0.0,location=0.0');
+        IF rezultat < 20 THEN
+          DBMS_OUTPUT.PUT_LINE('Zdjecia sa podobne - podobienstwo = ' || rezultat || ', id_restauracji = ' || id_restauracji || ', id_dania = ' || id_dania);
+        ELSE 
+          DBMS_OUTPUT.PUT_LINE('Zdjecia nie sa podobne - podobienstwo = ' || rezultat || ', id_restauracji = ' || id_restauracji || ', id_dania = ' || id_dania);
         END IF;
       END IF;
   FETCH SygnaturyKursor INTO id_dania, id_restauracji, zdjecie_sygnatura_2;
@@ -236,5 +236,5 @@ BEGIN
 END;
 
 BEGIN
-  WyswietlPodobienstwoZdjecDan(1, 6);
+  WybierzNajbardziejPodobne(1, 6);
 END;
