@@ -69,22 +69,27 @@ BEGIN
   EksportZmodZdjecieRestauracji(9);
 END;
 
---Procedura eksportu wszystkich zmodyfikowanych zdjec restauracji (z kursorem)
+--Procedura eksportu wszystkich zmodyfikowanych zdjec restauracji (z kursorem i petla if)
 CREATE OR REPLACE PROCEDURE EksportZmodZdjeciaRestauracji
 AS 
-	id_restauracji Restauracje.id%TYPE;
-	zmodyfikowane_zdjecie Restauracje.zmodyfikowane_zdjecie%TYPE;
-	CURSOR cursorRestauracje IS
-	SELECT id FROM Restauracje;
+  id_restauracji Restauracje.id%TYPE;
+  zmodyfikowane_zdjecie Restauracje.zmodyfikowane_zdjecie%TYPE;
+  CURSOR cursorRestauracje IS
+  SELECT id, zmodyfikowane_zdjecie FROM Restauracje;
 BEGIN
-	OPEN cursorRestauracje;
-	FETCH cursorRestauracje INTO id_restauracji;
+  OPEN cursorRestauracje;
+  FETCH cursorRestauracje INTO id_restauracji, zmodyfikowane_zdjecie;
 
-	WHILE(cursorRestauracje%FOUND) LOOP
-		EksportZmodZdjecieRestauracji(id_restauracji);
-		FETCH cursorRestauracje INTO id_restauracji;
-	END LOOP;
-	CLOSE cursorRestauracje;
+  WHILE(cursorRestauracje%FOUND) LOOP
+    IF zmodyfikowane_zdjecie IS NULL THEN
+      DBMS_OUTPUT.PUT_LINE('Restauracja o id ' || id_restauracji || ' nie posiada zmodyfikowanego zdjecia'); 
+    ELSE
+      EksportZmodZdjecieRestauracji(id_restauracji);
+    END IF;
+    
+    FETCH cursorRestauracje INTO id_restauracji, zmodyfikowane_zdjecie;
+  END LOOP;
+  CLOSE cursorRestauracje;
 END;
 
 BEGIN
