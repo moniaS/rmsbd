@@ -202,3 +202,39 @@ END;
 BEGIN
   PorownajZdjeciaDan(6, 8, 1);
 END;
+
+--Procedura sprawdzajaca podobienstwo wybranego zdjecia ze wszystkimi zdjeciami z tabeli Dania_Restauracje
+CREATE OR REPLACE PROCEDURE WyswietlPodobienstwoZdjecDan
+(
+  p_id_dania Dania_Restauracje.id_dania%TYPE,
+  p_id_restauracji Dania_Restauracje.id_restauracji%TYPE
+) AS
+  id_dania Dania_Restauracje.id_dania%TYPE;
+  id_restauracji Dania_Restauracje.id_restauracji%TYPE;
+  zdjecie_sygnatura_1 ORDImageSignature;
+  zdjecie_sygnatura_2 ORDImageSignature;
+  rezultat INTEGER;
+  CURSOR SygnaturyKursor IS SELECT id_dania, id_restauracji, zdjecie_sygnatura 
+  FROM Dania_Restauracje;
+BEGIN
+  SELECT zdjecie_sygnatura INTO zdjecie_sygnatura_1 FROM Dania_Restauracje
+  WHERE id_dania = p_id_dania AND id_restauracji = p_id_restauracji;
+  OPEN SygnaturyKursor;
+  FETCH SygnaturyKursor INTO id_dania, id_restauracji, zdjecie_sygnatura_2;
+  WHILE(SygnaturyKursor%FOUND) LOOP
+      IF zdjecie_sygnatura_2 IS NOT NULL THEN
+        rezultat := ORDSYS.ORDImageSignature.isSimilar(zdjecie_sygnatura_1,
+        zdjecie_sygnatura_2,'color="0.9",texture=0.0,shape=0.0,location=0.0', 20);
+        IF rezultat = 1 THEN
+          DBMS_OUTPUT.PUT_LINE('Zdjecia sa podobne - id_restauracji = ' || id_restauracji || ', id_dania = ' || id_dania);
+        ELSIF rezultat = 0 THEN
+          DBMS_OUTPUT.PUT_LINE('Zdjecia nie sa podobne - id_restauracji = ' || id_restauracji || ', id_dania = ' || id_dania);
+        END IF;
+      END IF;
+  FETCH SygnaturyKursor INTO id_dania, id_restauracji, zdjecie_sygnatura_2;
+  END LOOP;
+END;
+
+BEGIN
+  WyswietlPodobienstwoZdjecDan(1, 6);
+END;
