@@ -53,7 +53,8 @@ CREATE TABLE Restauracje (
   Nazwa_ulicy VARCHAR2(50 CHAR) NOT NULL,
   Numer_ulicy VARCHAR2(10 CHAR) NOT NULL,
   Miasto VARCHAR2(20 CHAR) NOT NULL,
-  Zdjecie ORDimage
+  Zdjecie ORDimage,
+  Zmodyfikowane_zdjecie ORDImage
 );
 
 CREATE SEQUENCE Restauracje_seq START WITH 1 INCREMENT BY 1;
@@ -70,6 +71,7 @@ CREATE TABLE Dania_Restauracje (
 	ID_dania NUMBER(10) NOT NULL,
   ID_restauracji NUMBER(10) NOT NULL,
   Zdjecie ORDimage,
+  Zdjecie_sygnatura ORDImageSignature,
   CONSTRAINT DR1 PRIMARY KEY (ID_dania, ID_restauracji),
 	CONSTRAINT DR2 FOREIGN KEY (ID_dania) REFERENCES Dania (ID),
 	CONSTRAINT DR3 FOREIGN KEY (ID_restauracji) REFERENCES Restauracje (ID)

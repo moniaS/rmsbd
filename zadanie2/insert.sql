@@ -1,7 +1,3 @@
---Jako administrator nalezy stworzyc folder
-CREATE DIRECTORY IMAGES AS '/home/oracle/Desktop/Images';
-GRANT READ, WRITE ON DIRECTORY IMAGES TO rmsbd;
-
 --Wstawienie danych do tabeli Restauracje
 CREATE OR REPLACE PROCEDURE DodajRestauracje
 (
@@ -101,21 +97,21 @@ BEGIN
 END;
 
 BEGIN
-DodajDanieDoRestauracji(6, 1, 'kreplach.jpg');
-DodajDanieDoRestauracji(8, 2, 'lasagne-angelo.jpg');
-DodajDanieDoRestauracji(7, 2, 'makaron-kur-angelo.jpg'); 
-DodajDanieDoRestauracji(1, 8, 'nalesniki-jag-pozytyvka.jpg');
-DodajDanieDoRestauracji(2, 8, 'nalesniki-jab-pozytyvka.jpg');
-DodajDanieDoRestauracji(3, 8, 'nalesniki-mal-pozytyvka.jpg');
-DodajDanieDoRestauracji(4, 8, 'nalesniki-kur-pozytyvka.jpg');
-DodajDanieDoRestauracji(1, 6, 'nalesniki-jag-manekin.jpg');
-DodajDanieDoRestauracji(2, 6, 'nalesniki-jab-manekin.jpg');
-DodajDanieDoRestauracji(3, 6, 'nalesniki-mal-manekin.jpg');
-DodajDanieDoRestauracji(4, 6, 'nalesniki-kur-manekin.jpg');
-DodajDanieDoRestauracji(5, 6, 'nalesniki-ind-manekin.jpg');
-DodajDanieDoRestauracji(7, 6, 'makaron-kur-angelo.jpg');
-DodajDanieDoRestauracji(9, 5, 'kebab-kur-lavash.jpg');
-DodajDanieDoRestauracji(10, 5, 'kebab-wol-lavash.jpg');
+  DodajDanieDoRestauracji(6, 1, 'kreplach.jpg');
+  DodajDanieDoRestauracji(8, 2, 'lasagne-angelo.jpg');
+  DodajDanieDoRestauracji(7, 2, 'makaron-kur-angelo.jpg'); 
+  DodajDanieDoRestauracji(1, 8, 'nalesniki-jag-pozytyvka.jpg');
+  DodajDanieDoRestauracji(2, 8, 'nalesniki-jab-pozytyvka.jpg');
+  DodajDanieDoRestauracji(3, 8, 'nalesniki-mal-pozytyvka.jpg');
+  DodajDanieDoRestauracji(4, 8, 'nalesniki-kur-pozytyvka.jpg');
+  DodajDanieDoRestauracji(1, 6, 'nalesniki-jag-manekin.jpg');
+  DodajDanieDoRestauracji(2, 6, 'nalesniki-jab-manekin.jpg');
+  DodajDanieDoRestauracji(3, 6, 'nalesniki-mal-manekin.jpg');
+  DodajDanieDoRestauracji(4, 6, 'nalesniki-kur-manekin.jpg');
+  DodajDanieDoRestauracji(5, 6, 'nalesniki-ind-manekin.jpg');
+  DodajDanieDoRestauracji(7, 6, 'makaron-kur-angelo.jpg');
+  DodajDanieDoRestauracji(9, 5, 'kebab-kur-lavash.jpg');
+  DodajDanieDoRestauracji(10, 5, 'kebab-wol-lavash.jpg');
 END;
 
 --Wstawienie danych do tabeli Wlasciciele

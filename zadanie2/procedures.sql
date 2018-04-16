@@ -29,8 +29,6 @@ BEGIN
 END;
 
 --Procedura modyfikujaca zdjecie restauracji (powiekszenie, skala szarosci na 8 bitach, obrot o 90 stopni, rozjasnienie)
-ALTER TABLE Restauracje ADD zmodyfikowane_zdjecie ORDImage;
-
 CREATE OR REPLACE PROCEDURE ModyfikujZdjecieRestauracji
 (
   p_id_restauracji Restauracje.id%TYPE
@@ -147,9 +145,6 @@ BEGIN
 END;
 
 --Procedura dodajaca sygnature do zdjecia w tabeli Dania_Restauracje
-ALTER TABLE DANIA_RESTAURACJE
-ADD zdjecie_sygnatura ORDImageSignature
-
 CREATE OR REPLACE PROCEDURE DodajSygnatureDoZdjeciaDania
 (
   p_id_dania Dania_Restauracje.id_dania%TYPE,
