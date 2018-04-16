@@ -144,3 +144,11 @@ INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('antek60');
 INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('krzysiek85');
 INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('wojtek34');
 INSERT INTO Klienci (nazwa_uzytkownika) VALUES ('ania66');
+
+--Wstawienie danych do tabeli Opinie
+INSERT INTO Opinie (opis, ocena, id_restauracji, id_klienta) VALUES ('Swietna restauracja! Polecam przede wszystkim na lunch lub kolacje', 9, 6, 1);
+INSERT INTO Opinie (opis, ocena, id_restauracji, id_klienta) VALUES ('Elegancka restauracja z wysmienita kuchnia zydowska', 8, 1, 2);
+INSERT INTO Opinie (opis, ocena, id_restauracji, id_klienta) VALUES ('Gruzinska, popularna restauracja. Lepiej rezerwowac zawczasu. Jedzenie i obsluga bardzo dobre.', 7, 5, 3);
+INSERT INTO Opinie (opis, ocena, id_restauracji, id_klienta) VALUES ('Dobre nalesniki. Minusem sa wieczne kolejki i brak mozliwosci rezerwacji', 7, 6, 3);
+INSERT INTO Opinie (opis, ocena, id_restauracji, id_klienta) VALUES ('Pyszna pizza i wloskie makarony, polecam!', 9, 7, 4);
+INSERT INTO Opinie (opis, ocena, id_restauracji, id_klienta) VALUES ('Jedzenie zdecydowanie na plus, ale ciezko jest dostac stolik', 8, 9, 5);
