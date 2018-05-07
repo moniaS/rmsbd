@@ -1,0 +1,5 @@
+Stworzyć na pulpicie folder xml_files
+
+W konsoli po zalogowaniu do plsql wpisać:
+create directory XMLFILES as '/home/oracle/Desktop/xml_files';
+grant read, write on directory XMLFILES to RMSBD;
