@@ -31,7 +31,7 @@ END;
 -- Tworzenie tabeli Dania
 CREATE TABLE Dania (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
-	Nazwa VARCHAR2(50 CHAR) NOT NULL
+	Spec XMLTYPE
 );
 
 CREATE SEQUENCE Dania_seq START WITH 1 INCREMENT BY 1;
@@ -61,19 +61,14 @@ END;
 -- Tworzenie tabeli Dania_Restauracje
 CREATE TABLE Dania_Restauracje (
 	ID_dania NUMBER(10) NOT NULL,
-  ID_restauracji NUMBER(10) NOT NULL,
-  Zdjecie ORDimage,
-  Zdjecie_sygnatura ORDImageSignature,
-  CONSTRAINT DR1 PRIMARY KEY (ID_dania, ID_restauracji),
-	CONSTRAINT DR2 FOREIGN KEY (ID_dania) REFERENCES Dania (ID),
-	CONSTRAINT DR3 FOREIGN KEY (ID_restauracji) REFERENCES Restauracje (ID)
+  	ID_restauracji NUMBER(10) NOT NULL,
 );
 
 -- Tworzenie tabeli Kategorie_jedzenia_Restauracje
 CREATE TABLE Kategorie_jedzenia_Restauracje (
 	ID_kategorii NUMBER(10) NOT NULL,
-  ID_restauracji NUMBER(10) NOT NULL,
-  CONSTRAINT KR1 PRIMARY KEY (ID_kategorii, ID_restauracji),
+  	ID_restauracji NUMBER(10) NOT NULL,
+  	CONSTRAINT KR1 PRIMARY KEY (ID_kategorii, ID_restauracji),
 	CONSTRAINT KR2 FOREIGN KEY (ID_kategorii) REFERENCES Kategorie_jedzenia (ID),
 	CONSTRAINT KR3 FOREIGN KEY (ID_restauracji) REFERENCES Restauracje (ID)
 );
@@ -81,8 +76,8 @@ CREATE TABLE Kategorie_jedzenia_Restauracje (
 -- Tworzenie tabeli Wlasciciele_Restauracje
 CREATE TABLE Wlasciciele_Restauracje (
 	ID_wlasciciela NUMBER(10) NOT NULL,
-  ID_restauracji NUMBER(10) NOT NULL,
-  CONSTRAINT WR1 PRIMARY KEY (ID_wlasciciela, ID_restauracji),
+  	ID_restauracji NUMBER(10) NOT NULL,
+  	CONSTRAINT WR1 PRIMARY KEY (ID_wlasciciela, ID_restauracji),
 	CONSTRAINT WR2 FOREIGN KEY (ID_wlasciciela) REFERENCES Wlasciciele (ID),
 	CONSTRAINT WR3 FOREIGN KEY (ID_restauracji) REFERENCES Restauracje (ID)
 );
