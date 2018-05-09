@@ -1,3 +1,5 @@
+---------------IMPORT DANYCH-----------------
+
 --Wprowadzenie danych do tabeli wlasciciele - caly plik
 create or replace procedure import_xml_to_wlasciciele(p_filename in varchar2) is
   xmlfile xmltype;
@@ -51,6 +53,24 @@ END;
 execute import_xml_rozne_dania(p_filename => 'dania.xml');
 
 
+--import danych do tabeli dania - dopisanie danych do istniejacego rekordu
+create or replace procedure import_dania_istniejacy_rekord(p_filename in varchar2) is
+  danie_spec xmltype;
+  danie_id number;
+  xmlfile xmltype;
+begin
+  xmlfile := xmltype(bfilename('XMLFILES',p_filename),nls_charset_id('AL32UTF8'));
+  select extractvalue(xmlfile, 'danie/@id') into danie_id from dual;
+  update dania set spec = xmlfile.extract('/danie') where id = danie_id;
+end;
+
+insert into dania (id) values (dania_seq.NEXTVAL);
+execute import_dania_istniejacy_rekord('danie_id.xml');
+
+
+
+------------------POZYSKIWANIE INFORMACJI---------------------------
+
 --pozyskiwanie informacji o danym wlasicielu na podstawie jego id
 create or replace procedure show_wlasciciel_info(wlasciciel_id in number) is
   x clob;
@@ -103,6 +123,24 @@ END;
 
 execute dania_kalorie (500);
 
+
+--wyswietlanie skladnikow z jakich sklada sie dana potrawa
+create or replace procedure pobierz_skladniki(nazwa in varchar2) is
+  danie_spec dania.spec%TYPE;
+  seq XMLSequenceType;
+begin
+  select d.spec into danie_spec from dania d where extractvalue(d.spec, 'danie/nazwa') = nazwa;
+  dbms_output.put_line('Skladniki potrawy '|| nazwa || ':');
+  select XMLSEQUENCE(danie_spec.extract('danie/skladniki/skladnik')) into seq from dual;
+  for i in 1..seq.count loop
+    dbms_output.put_line(seq(i).extract('/skladnik/text()').getCLOBVal());
+  end loop;
+end;
+
+execute pobierz_skladniki('Schabowy z mizeria');
+
+
+----------------------------ESKPORTOWAIE DANYCH-----------------------------
 
 --eksport wszystkich rekordów z tabeli restauracje do pliku xml
 create or replace procedure export_restauracje_info is
