@@ -46,7 +46,7 @@ END;
 -- Tworzenie tabeli Restauracje
 CREATE TABLE Restauracje (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
-	Restauracja_spec CLOB;
+	Restauracja_spec xmltype;
 );
 
 CREATE SEQUENCE Restauracje_seq START WITH 1 INCREMENT BY 1;
