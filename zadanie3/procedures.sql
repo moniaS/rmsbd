@@ -139,7 +139,8 @@ end;
 
 execute pobierz_skladniki('Schabowy z mizeria');
 
---NIE TESTOWANE
+
+--obliczenie i wyswietlenie sumy kalorii wszystkich dan
 create or replace procedure show_suma_kalorii is
   danie_spec xmltype;
   kalorie number(10);
@@ -151,9 +152,9 @@ begin
   while (cursorDania%FOUND) loop
     select extractvalue(danie_spec, '/danie/kalorie') into kalorie from dual;
     suma_kalorii := suma_kalorii + kalorie;
-    dbms_output.put_line(suma_kalorii);
+    fetch cursorDania into danie_spec;
   end loop;
-  dbms_output.put_line('Suma kalorii' || suma_kalorii);
+  dbms_output.put_line('Suma kalorii wszystkich dan: ' || suma_kalorii);
 end;
 
 execute show_suma_kalorii;

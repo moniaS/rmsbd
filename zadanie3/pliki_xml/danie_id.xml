@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<danie id="81">	
+	<nazwa>Mielone w sosie pomidorowym</nazwa>
+	<kalorie>450</kalorie>
+	<gramatura>300</gramatura>
+	<skladniki>
+		<skladnik>mieso wieprzowe</skladnik>
+		<skladnik>pomidory</skladnik>
+		<skladnik>jajko</skladnik>
+	</skladniki>
+	<gluten>tak</gluten>
+</danie>

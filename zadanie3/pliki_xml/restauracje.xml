@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<restauracje>
+	<restauracja>
+		<nazwa>Anatewka</nazwa>
+		<nazwaUlicy>6 Sierpnia</nazwaUlicy>
+		<numerUlicy>2/4</numerUlicy>
+		<miasto>Lodz</miasto>
+	</restauracja>
+	<restauracja>
+		<nazwa>Angelo</nazwa>
+		<nazwaUlicy>6 Sierpnia</nazwaUlicy>
+		<numerUlicy>1/3</numerUlicy>
+		<miasto>Lodz</miasto>
+	</restauracja>
+	<restauracja>
+		<nazwa>Galicja</nazwa>
+		<nazwaUlicy>Ogrodowa</nazwaUlicy>
+		<numerUlicy>19a</numerUlicy>
+		<miasto>Lodz</miasto>
+	</restauracja>
+	<restauracja>
+		<nazwa>Hot Spoon</nazwa>
+		<nazwaUlicy>Drewnowska</nazwaUlicy>
+		<numerUlicy>58</numerUlicy>
+		<miasto>Lodz</miasto>
+	</restauracja>
+	<restauracja>
+		<nazwa>Lavash</nazwa>
+		<nazwaUlicy>Piotrkowska</nazwaUlicy>
+		<numerUlicy>69</numerUlicy>
+		<miasto>Lodz</miasto>
+	</restauracja>
+	<restauracja>
+		<nazwa>Manekin</nazwa>
+		<nazwaUlicy>6 Sierpnia</nazwaUlicy>
+		<numerUlicy>1</numerUlicy>
+		<miasto>Lodz</miasto>
+	</restauracja>
+</restauracje>
+

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dania>
+	<danie id="1">	
+		<nazwa>Kurczak w sosie pieczarkowym</nazwa>
+		<kalorie>456</kalorie>
+		<gramatura>400</gramatura>
+		<skladniki>
+			<skladnik>kurczak</skladnik>
+			<skladnik>pieczarki</skladnik>
+			<skladnik>smietana</skladnik>
+		</skladniki>
+		<gluten>tak</gluten>
+	</danie>
+	<danie id="2">	
+		<nazwa>Nalesniki z malinami</nazwa>
+		<kalorie>400</kalorie>
+		<gramatura>200</gramatura>
+		<skladniki>
+			<skladnik>maka</skladnik>
+			<skladnik>maliny</skladnik>
+			<skladnik>mleko</skladnik>
+			<skladnik>jajka</skladnik>
+		</skladniki>
+		<gluten>nie</gluten>
+	</danie>
+	<danie id="3">	
+		<nazwa>Schabowy z mizeria</nazwa>
+		<kalorie>600</kalorie>
+		<gramatura>500</gramatura>
+		<skladniki>
+			<skladnik>mieso wieprzowe</skladnik>
+			<skladnik>maka</skladnik>
+			<skladnik>jajka</skladnik>
+			<skladnik>ogorek</skladnik>
+			<skladnik>smietana</skladnik>
+		</skladniki>
+		<gluten>tak</gluten>
+	</danie>
+	<danie id="4">	
+		<nazwa>Schab w sosie wlasnym</nazwa>
+		<kalorie>660</kalorie>
+		<gramatura>500</gramatura>
+		<skladniki>
+			<skladnik>mieso wieprzowe</skladnik>
+			<skladnik>maka</skladnik>
+			<skladnik>ziemniaki</skladnik>
+			<skladnik>koperek</skladnik>
+		</skladniki>
+		<gluten>tak</gluten>
+	</danie>
+	<danie id="5">	
+		<nazwa>Zupa pomidorowa</nazwa>
+		<kalorie>200</kalorie>
+		<gramatura>300</gramatura>
+		<skladniki>
+			<skladnik>pomidory</skladnik>
+			<skladnik>smietana</skladnik>
+		</skladniki>
+		<gluten>nie</gluten>
+	</danie>
+	<danie id="6">	
+		<nazwa>Shoarma</nazwa>
+		<kalorie>500</kalorie>
+		<gramatura>400</gramatura>
+		<skladniki>
+			<skladnik>mieso wieprzowe</skladnik>
+			<skladnik>ziemniaki</skladnik>
+			<skladnik>salata</skladnik>
+		</skladniki>
+		<gluten>nie</gluten>
+	</danie>
+	<danie id="7">	
+		<nazwa>Nalesniki z dzemem</nazwa>
+		<kalorie>300</kalorie>
+		<gramatura>200</gramatura>
+		<skladniki>
+			<skladnik>dzem</skladnik>
+			<skladnik>maka</skladnik>
+			<skladnik>jajka</skladnik>
+			<skladnik>mleko</skladnik>
+		</skladniki>
+		<gluten>tak</gluten>
+	</danie>
+	<danie id="8">	
+		<nazwa>Pierogi</nazwa>
+		<kalorie>300</kalorie>
+		<gramatura>200</gramatura>
+		<gluten>nie</gluten>
+	</danie>
+	
+</dania>
