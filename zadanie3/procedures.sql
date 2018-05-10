@@ -139,6 +139,25 @@ end;
 
 execute pobierz_skladniki('Schabowy z mizeria');
 
+--NIE TESTOWANE
+create or replace procedure show_suma_kalorii is
+  danie_spec xmltype;
+  kalorie number(10);
+  suma_kalorii number(10) := 0;
+  cursor cursorDania is select d.spec from dania d;
+begin
+  open cursorDania;
+  fetch cursorDania into danie_spec;
+  while (cursorDania%FOUND) loop
+    select extractvalue(danie_spec, '/danie/kalorie') into kalorie from dual;
+    suma_kalorii := suma_kalorii + kalorie;
+    dbms_output.put_line(suma_kalorii);
+  end loop;
+  dbms_output.put_line('Suma kalorii' || suma_kalorii);
+end;
+
+execute show_suma_kalorii;
+
 
 ----------------------------ESKPORTOWAIE DANYCH-----------------------------
 
