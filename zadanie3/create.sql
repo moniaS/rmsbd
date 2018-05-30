@@ -1,7 +1,7 @@
 -- Tworzenie tabeli Wlasciciele
 CREATE TABLE Wlasciciele (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
-	Wlasciciel_spec XMLTYPE;
+	Wlasciciel_spec XMLTYPE
 );
 
 CREATE SEQUENCE Wlasciciele_seq START WITH 1 INCREMENT BY 1;
@@ -46,7 +46,7 @@ END;
 -- Tworzenie tabeli Restauracje
 CREATE TABLE Restauracje (
 	ID NUMBER(10) NOT NULL  PRIMARY KEY,
-	Restauracja_spec xmltype;
+	Restauracja_spec xmltype
 );
 
 CREATE SEQUENCE Restauracje_seq START WITH 1 INCREMENT BY 1;
@@ -61,7 +61,7 @@ END;
 -- Tworzenie tabeli Dania_Restauracje
 CREATE TABLE Dania_Restauracje (
 	ID_dania NUMBER(10) NOT NULL,
-  	ID_restauracji NUMBER(10) NOT NULL,
+  	ID_restauracji NUMBER(10) NOT NULL
 );
 
 -- Tworzenie tabeli Kategorie_jedzenia_Restauracje

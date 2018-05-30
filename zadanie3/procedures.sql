@@ -212,7 +212,7 @@ create or replace procedure export_dania_gluten(czy_gluten in varchar2) is
 begin
   dbms_lob.createtemporary(tmp_info, true);
   dbms_lob.append(tmp_info, '<?xml version="1.0" encoding="UTF-8"?>');
-  dbms_lob.append(tmp_info, '<daniadasf>');
+  dbms_lob.append(tmp_info, '<dania>');
   
   open cursorDania;
   fetch cursorDania into tmp_danie;
