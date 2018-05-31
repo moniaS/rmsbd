@@ -5,7 +5,8 @@ CREATE TABLE Restauracje (
   	Nazwa_ulicy VARCHAR2(50 CHAR) NOT NULL,
   	Numer_ulicy VARCHAR2(10 CHAR) NOT NULL,
  	Miasto VARCHAR2(20 CHAR) NOT NULL,
- 	Lokalizacja "SDO_GEOMETRY"
+ 	Lokalizacja "SDO_GEOMETRY",
+ 	Powierzchnia "SDO_GEOMETRY"
 );
 
 CREATE SEQUENCE Restauracje_seq START WITH 1 INCREMENT BY 1;
@@ -23,7 +24,7 @@ insert into user_sdo_geom_metadata
 	(table_name,column_name,diminfo,srid)
 	values (
 		'Restauracje','Lokalizacja',
-		sdo_dim_array( --wspolrzedne 100x100
+		sdo_dim_array(
 			sdo_dim_element('X',19.416744, 19.484454, 0.05),
 			sdo_dim_element('Y',51.754124, 51.791678, 0.05)
 		),
@@ -36,6 +37,22 @@ CREATE INDEX rest_lok_spatial_index
 
 
 
+insert into user_sdo_geom_metadata 
+(table_name,column_name,diminfo,srid)
+values (
+	'Restauracje','Powierzchnia',
+	sdo_dim_array( 
+		sdo_dim_element('X',19.416744, 19.484454, 0.05),
+		sdo_dim_element('Y',51.754124, 51.791678, 0.05)
+	),
+	8307
+); 
+
+CREATE INDEX rest_pow_spatial_index
+   ON Restauracje(powierzchnia)
+   INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+
+
 -----------------KLIENCI----------------------------------------
 CREATE TABLE Klienci(
 	ID NUMBER(10) NOT NULL PRIMARY KEY,
@@ -43,8 +60,7 @@ CREATE TABLE Klienci(
   	Nazwisko VARCHAR2(30 CHAR),
   	Email VARCHAR2(50 CHAR) NOT NULL,
   	Nr_telefonu VARCHAR2(10 CHAR),
-  	Przyblizona_lokalizacja "SDO_GEOMETRY",
-  	Obszar_zamieszkania "SDO_GEOMETRY"
+  	Przyblizona_lokalizacja "SDO_GEOMETRY"
 );
 
 CREATE SEQUENCE Klienci_seq START WITH 1 INCREMENT BY 1;
@@ -63,7 +79,7 @@ insert into user_sdo_geom_metadata
 	(table_name,column_name,diminfo,srid)
 	values (
 		'Klienci','Przyblizona_lokalizacja',
-		sdo_dim_array( --wspolrzedne 100x100
+		sdo_dim_array( 
 			sdo_dim_element('X',19.416744, 19.484454, 0.05),
 			sdo_dim_element('Y',51.754124, 51.791678, 0.05)
 		),
@@ -72,21 +88,6 @@ insert into user_sdo_geom_metadata
 
 CREATE INDEX klienci_lok_spatial_index
    ON Klienci(Przyblizona_lokalizacja)
-   INDEXTYPE IS MDSYS.SPATIAL_INDEX;
-
-insert into user_sdo_geom_metadata 
-	(table_name,column_name,diminfo,srid)
-	values (
-		'Klienci','Obszar_zamieszkania',
-		sdo_dim_array( --wspolrzedne 100x100
-			sdo_dim_element('X',19.416744, 19.484454, 0.05),
-			sdo_dim_element('Y',51.754124, 51.791678, 0.05)
-		),
-		8307
-	); 
-
-CREATE INDEX klienci_obszar_spatial_index
-   ON Klienci(Obszar_zamieszkania)
    INDEXTYPE IS MDSYS.SPATIAL_INDEX;
 
 -----------------WLASCICIELE-------------------------------------
