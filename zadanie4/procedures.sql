@@ -77,3 +77,50 @@ begin
 end;
 
 execute wyswietl_odl_rest_klient(1, 2);
+
+--edycja tabeli restauracje, dodanie prostokata do powierzchni restauracji
+create or replace procedure dodaj_powierzchnie_prostokat(id_restauracji in number, x1 in number, y1 in number, x2 in number, y2 in number) as
+begin
+	update restauracje set powierzchnia = SDO_GEOMETRY(
+		2003, --dwuwymiarowy wielokat
+		8307,
+		null,
+		SDO_ELEM_INFO_ARRAY(1,1003,3), --3 oznacza ze jest to prostokat (definiujemy lewy dolny i prawy gorny kat)
+		SDO_ORDINATE_ARRAY(x1,y1,x2,y2)
+		) 
+	where id = id_restauracji;
+end;
+
+execute dodaj_powierzchnie_prostokat(3, 19.456025, 51.768518, 19.456183, 51.768648);
+
+
+--edycja tabeli restauracje, dodanie 5-kata do powierzchni restauracji
+create or replace procedure dodaj_powierzchnie_5_kat(id_restauracji in number,
+  x1 in number, y1 in number,
+  x2 in number, y2 in number, 
+  x3 in number, y3 in number, 
+  x4 in number, y4 in number, 
+  x5 in number, y5 in number) as
+begin
+	update restauracje set powierzchnia = SDO_GEOMETRY(
+		2003, --dwuwymiarowy wielokat
+		8307,
+		null,
+		SDO_ELEM_INFO_ARRAY(1,1003,1),
+		SDO_ORDINATE_ARRAY(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5)
+		) 
+	where id = id_restauracji;
+end;
+
+execute dodaj_powierzchnie_5_kat(1, 19.447428, 51.780612, 19.447485, 51.780617, 19.447468, 51.780666, 19.447414, 51.780664, 19.447409, 51.780629);
+
+--oblicz powierzchnie restauracji (aby wykonac najpierw trzeba dodac powierzchnie do danej restauracji)
+create or replace procedure oblicz_powierzchnie(id_restauracji in number) as
+	nazwa_rest restauracje.nazwa%type;
+	powierzchnia number;
+begin
+	select nazwa, SDO_GEOM.SDO_AREA(r.powierzchnia, 0.005) into nazwa_rest, powierzchnia FROM restauracje r where id = id_restauracji;
+	dbms_output.put_line('Powierzchnia restauracji ' || nazwa_rest || ' wynosi ' || round(powierzchnia, 2) || ' m2');
+end;
+
+execute oblicz_powierzchnie(3);
