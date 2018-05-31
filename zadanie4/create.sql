@@ -24,10 +24,10 @@ insert into user_sdo_geom_metadata
 	values (
 		'Restauracje','Lokalizacja',
 		sdo_dim_array( --wspolrzedne 100x100
-			sdo_dim_element('X',0,100,0.005),
-			sdo_dim_element('Y',0,100,0.005)
+			sdo_dim_element('X',19.416744, 19.484454, 0.05),
+			sdo_dim_element('Y',51.754124, 51.791678, 0.05)
 		),
-		null
+		8307 -- SRID dla 'Longitude / Latitude (WGS 84)' uklad wspolrzednych
 	); 
 
 CREATE INDEX rest_lok_spatial_index
@@ -64,13 +64,13 @@ insert into user_sdo_geom_metadata
 	values (
 		'Klienci','Przyblizona_lokalizacja',
 		sdo_dim_array( --wspolrzedne 100x100
-			sdo_dim_element('X',0,100,0.005),
-			sdo_dim_element('Y',0,100,0.005)
+			sdo_dim_element('X',19.416744, 19.484454, 0.05),
+			sdo_dim_element('Y',51.754124, 51.791678, 0.05)
 		),
-		null
+		8307
 	); 
 
-CREATE INDEX klienci_lokalizacja_spatial_index
+CREATE INDEX klienci_lok_spatial_index
    ON Klienci(Przyblizona_lokalizacja)
    INDEXTYPE IS MDSYS.SPATIAL_INDEX;
 
@@ -79,10 +79,10 @@ insert into user_sdo_geom_metadata
 	values (
 		'Klienci','Obszar_zamieszkania',
 		sdo_dim_array( --wspolrzedne 100x100
-			sdo_dim_element('X',0,100,0.005),
-			sdo_dim_element('Y',0,100,0.005)
+			sdo_dim_element('X',19.416744, 19.484454, 0.05),
+			sdo_dim_element('Y',51.754124, 51.791678, 0.05)
 		),
-		null
+		8307
 	); 
 
 CREATE INDEX klienci_obszar_spatial_index
@@ -145,8 +145,6 @@ END;
 CREATE TABLE Dania_Restauracje (
 	ID_dania NUMBER(10) NOT NULL,
   ID_restauracji NUMBER(10) NOT NULL,
-  Zdjecie ORDimage,
-  Zdjecie_sygnatura ORDImageSignature,
   CONSTRAINT DR1 PRIMARY KEY (ID_dania, ID_restauracji),
 	CONSTRAINT DR2 FOREIGN KEY (ID_dania) REFERENCES Dania (ID),
 	CONSTRAINT DR3 FOREIGN KEY (ID_restauracji) REFERENCES Restauracje (ID)
