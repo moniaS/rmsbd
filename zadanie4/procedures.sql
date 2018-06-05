@@ -19,7 +19,7 @@ BEGIN
               NULL));
 END;
 
-execute DodajRestauracje('Hot Spoon', 'Drewnowska', '58', 'Lodz', 19.447467, 51.780623);
+execute DodajRestauracje('Affogato', 'Piotrkowska', '144', 'Lodz', 19.458656, 51.760781);
 
 --zmiana lokalizacji restauracji
 create or replace procedure zmiana_lokalizacji_rest(id_restauracji in number, x in number, y in number) AS
@@ -106,8 +106,8 @@ begin
 		2003, --dwuwymiarowy wielokat
 		8307,
 		null,
-		SDO_ELEM_INFO_ARRAY(1,1003,1),
-		SDO_ORDINATE_ARRAY(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5)
+		SDO_ELEM_INFO_ARRAY(1,1003,1), --1 w polaczeniu z 1003 oznacza ze jest to wielobok -> pierwsze i ostatnie wspolrzedne musza byc takie same zeby sie domknal
+		SDO_ORDINATE_ARRAY(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x1, y1)
 		) 
 	where id = id_restauracji;
 end;

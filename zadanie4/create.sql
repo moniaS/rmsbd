@@ -73,8 +73,8 @@ BEGIN
 END;
 
 
---zdefiniowanie zakresu wspolrzednych danych w tabeli Klienci dla kolumn Przyblizona_lokalizacja oraz Obszar_zamieszkania
---wymagane aby dla kazdej kombinacji tabela-kolumna dla ktorej chcemy utworzyc Spatial index
+--zdefiniowanie zakresu wspolrzednych danych w tabeli Klienci dla kolumny Przyblizona_lokalizacja
+--wymagane dla kazdej kombinacji tabela-kolumna dla ktorej chcemy utworzyc Spatial index
 insert into user_sdo_geom_metadata 
 	(table_name,column_name,diminfo,srid)
 	values (

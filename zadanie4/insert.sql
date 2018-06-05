@@ -2,11 +2,11 @@
 CREATE OR REPLACE PROCEDURE DodajRestauracje
 (
 	p_nazwa restauracje.nazwa%TYPE,
-  p_nazwa_ulicy restauracje.nazwa_ulicy%TYPE,
-  p_numer_ulicy restauracje.numer_ulicy%TYPE,
+  	p_nazwa_ulicy restauracje.nazwa_ulicy%TYPE,
+  	p_numer_ulicy restauracje.numer_ulicy%TYPE,
 	p_miasto restauracje.miasto%TYPE,
-  x number,
-  y number
+  	x number,
+  	y number
 ) AS
 BEGIN
     INSERT INTO Restauracje (nazwa, nazwa_ulicy, numer_ulicy, miasto, lokalizacja)
